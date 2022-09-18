@@ -30,7 +30,8 @@ platforms_counts = platforms_counts.melt('answer', var_name="platform", value_na
 platforms_counts["answer"] = platforms_counts["answer"].apply(lambda x: sanitise_answers(x))
 # TODO: remove None rows
 platforms_counts = platforms_counts.replace(to_replace='None', value=np.nan).dropna()
-platforms_counts = platforms_counts.explode(['answer'])
+print(platforms_counts)
+platforms_counts = platforms_counts.explode('answer')
 platforms_counts = platforms_counts.groupby(by=["answer", "platform"], as_index=False).sum()
 print(platforms_counts.describe())
 
@@ -47,6 +48,6 @@ fig.update_layout(legend=dict(
     y=1.02,
     xanchor="right",
     x=1
-), title_y=1, font_family="Roboto")
+), title_y=1, font_family="Roboto", yaxis_title=None, xaxis_title=None, legend_title_text=None)
 fig.show()
 
