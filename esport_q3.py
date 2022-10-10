@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-
 data = pd.read_csv("esport.csv")
 statement = data.iloc[:, 16:28]
 statement_names = [x.split(":")[-1].translate(str.maketrans({"[": "", "]": ""})) for x in list(statement.columns)]
@@ -24,10 +23,12 @@ statement_counts = statement_counts.melt('answer', var_name="statement", value_n
 # # mapped_statement = mapped_statement.rename_axis("answer").reset_index()
 # print(mapped_statement.describe().T)
 
-fig = px.bar(statement_counts, x="statement", y="value", color="answer",
-             title="Proszę stwierdzić na ile zgadzasz się ze stwierdzeniem: Bardzo często spędzam czas wolny:",
-            color_discrete_sequence=px.colors.qualitative.G10,
-             template='seaborn')
+fig = px.histogram(statement_counts, x="statement", y="value", color="answer",
+                   barnorm="fraction",
+                   text_auto='.2%',
+                   title="Proszę stwierdzić na ile zgadzasz się ze stwierdzeniem: Bardzo często spędzam czas wolny:",
+                   color_discrete_sequence=px.colors.qualitative.G10,
+                   template='seaborn')
 fig.update_layout(legend=dict(
     orientation="h",
     yanchor="bottom",
@@ -35,4 +36,5 @@ fig.update_layout(legend=dict(
     xanchor="right",
     x=1
 ), title_y=1, font_family="Roboto", yaxis_title=None, xaxis_title=None, legend_title_text=None)
+fig.layout.yaxis.tickformat = ".2%"
 fig.show()

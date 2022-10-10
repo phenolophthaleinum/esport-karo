@@ -12,15 +12,15 @@ def sanitise_answers(ans):
 data = pd.read_csv("esport.csv")
 
 platforms_names = ["YouTube Gaming",
-"Twitch",
-"InstaGib TV",
-"Mixer",
-"Hitbox",
-"Azubu",
-"BigoLive",
-"Gosu Gamers",
-"Dlive",
-"DiscoMelee"]
+                   "Twitch",
+                   "InstaGib TV",
+                   "Mixer",
+                   "Hitbox",
+                   "Azubu",
+                   "BigoLive",
+                   "Gosu Gamers",
+                   "Dlive",
+                   "DiscoMelee"]
 platforms = data.iloc[:, 1:11]
 platforms.columns = platforms_names
 platforms_counts = platforms.apply(pd.Series.value_counts)
@@ -38,10 +38,12 @@ print(platforms_counts.describe())
 # fig = px.bar(platforms_counts, x=platforms_names, y="answer",
 #              title="Które z podanych platform streamingowych znasz, używasz do oglądania streamingu gier komputerowych lub do oglądania wydarzeń e-sportowych?",
 #              )
-fig = px.bar(platforms_counts, x="platform", y="value", color="answer",
-             title="Które z podanych platform streamingowych znasz, używasz do oglądania streamingu gier komputerowych lub do oglądania wydarzeń e-sportowych?",
-            color_discrete_sequence=px.colors.qualitative.G10,
-             template='seaborn')
+fig = px.histogram(platforms_counts, x="platform", y="value", color="answer",
+                   barnorm="fraction",
+                   text_auto='.2%',
+                   title="Które z podanych platform streamingowych znasz, używasz do oglądania streamingu gier komputerowych lub do oglądania wydarzeń e-sportowych?",
+                   color_discrete_sequence=px.colors.qualitative.G10,
+                   template='seaborn')
 fig.update_layout(legend=dict(
     orientation="h",
     yanchor="bottom",
@@ -49,5 +51,5 @@ fig.update_layout(legend=dict(
     xanchor="right",
     x=1
 ), title_y=1, font_family="Roboto", yaxis_title=None, xaxis_title=None, legend_title_text=None)
+fig.layout.yaxis.tickformat = ".2%"
 fig.show()
-
